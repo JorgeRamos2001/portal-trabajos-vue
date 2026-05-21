@@ -25,7 +25,6 @@ function badgeColor(tipo) {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex flex-col">
-    <NavbarPublic />
 
     <!-- Header -->
     <section class="bg-gradient-to-br from-slate-900 to-blue-900 py-12">

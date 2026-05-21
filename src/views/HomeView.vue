@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import api from '@/api/axios'
 import NavbarPublic from "@/components/NavbarPublic.vue";
 import FooterPage from "@/components/FooterPage.vue";
+import EmpleoCard from "@/components/EmpleoCard.vue";
 
 const stats = ref({
   empleosActivos: 0,
@@ -55,8 +56,6 @@ function buscar() {
 <template>
   <div class="min-h-screen bg-slate-50">
 
-    <!-- NAVBAR -->
-    <navbar-public></navbar-public>
 
     <!-- HERO -->
     <section class="bg-gradient-to-br from-slate-900 via-blue-900 to-blue-600 relative overflow-hidden py-24 lg:py-28">
@@ -183,27 +182,7 @@ function buscar() {
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div v-for="emp in empleos" :key="emp.id" class="bg-white border-2 border-slate-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-lg transition duration-200">
-            <div class="flex gap-3 mb-4">
-              <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-2xl flex-shrink-0">🏢</div>
-              <div class="flex-1">
-                <h6 class="font-bold text-slate-800 mb-0.5">{{ emp.titulo }}</h6>
-                <span class="text-slate-500 text-sm">{{ emp.empresa }}</span>
-              </div>
-              <button class="w-9 h-9 border-2 border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:border-blue-500 hover:text-blue-500 transition flex-shrink-0">🔖</button>
-            </div>
-            <div class="flex gap-2 mb-3">
-              <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md">{{ emp.modalidad }}</span>
-              <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-md">Tiempo completo</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-500 text-sm mb-3">
-              <span>📍 {{ emp.ubicacion }}</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-emerald-600 font-bold" style="font-family: 'Sora', sans-serif;">${{ emp.salarioMin }} – ${{ emp.salarioMax }}/mes</span>
-              <router-link :to="`/empleos/${emp.id}`" class="bg-blue-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-blue-700 transition" style="font-family: 'Sora', sans-serif;">Ver oferta</router-link>
-            </div>
-          </div>
+          <EmpleoCard v-for="emp in empleos" :key="emp.id" :empleo="emp" />
         </div>
       </div>
     </section>

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/axios'
 import NavbarPublic from '@/components/NavbarPublic.vue'
 import FooterPage from '@/components/FooterPage.vue'
+import EmpleoCard from "@/components/EmpleoCard.vue";
 
 const route = useRoute()
 const router = useRouter()
@@ -98,7 +99,6 @@ function tiempoRelativo(fecha) {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex flex-col">
-    <NavbarPublic />
 
     <!-- Header -->
     <section class="bg-gradient-to-br from-slate-900 to-blue-900 py-12">
@@ -180,28 +180,7 @@ function tiempoRelativo(fecha) {
 
           <!-- Lista -->
           <div v-else class="space-y-4">
-            <router-link v-for="emp in empleos" :key="emp.id" :to="`/empleos/${emp.id}`"
-                         class="block bg-white border-2 border-slate-200 rounded-2xl p-5 hover:border-blue-500 hover:shadow-lg transition duration-200">
-              <div class="flex gap-4">
-                <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-2xl flex-shrink-0">🏢</div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex justify-between gap-2">
-                    <div>
-                      <h6 class="font-bold text-slate-800 mb-0.5">{{ emp.titulo }}</h6>
-                      <span class="text-slate-500 text-sm">{{ emp.empresa }} · {{ emp.ubicacion }}</span>
-                    </div>
-                    <div class="text-right flex-shrink-0">
-                      <div class="text-emerald-600 font-bold text-sm" style="font-family: 'Sora', sans-serif;">{{ formatearSalario(emp.salarioMin, emp.salarioMax) }}</div>
-                      <span class="text-xs text-slate-400">{{ tiempoRelativo(emp.fechaPublicacion) }}</span>
-                    </div>
-                  </div>
-                  <div class="flex gap-2 mt-2">
-                    <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-0.5 rounded-md">{{ emp.modalidad }}</span>
-                    <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-0.5 rounded-md">{{ emp.categoria || 'General' }}</span>
-                  </div>
-                </div>
-              </div>
-            </router-link>
+            <EmpleoCard v-for="emp in empleos" :key="emp.id" :empleo="emp" />
 
             <div v-if="empleos.length === 0" class="text-center py-12 text-slate-400">
               No se encontraron empleos con esos filtros

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/axios'
 import NavbarPublic from '@/components/NavbarPublic.vue'
 import FooterPage from '@/components/FooterPage.vue'
+import RecursoCard from "@/components/RecursoCard.vue";
 
 const route = useRoute()
 const router = useRouter()
@@ -79,7 +80,6 @@ function badgeColor(tipo) {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex flex-col">
-    <NavbarPublic />
 
     <!-- Header -->
     <section class="bg-gradient-to-br from-slate-900 to-blue-900 py-14">
@@ -106,19 +106,7 @@ function badgeColor(tipo) {
       <div v-if="loading" class="text-center py-12 text-slate-400">Cargando...</div>
 
       <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <router-link v-for="rec in recursos" :key="rec.id" :to="`/recursos/${rec.id}`"
-                     class="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-lg transition duration-200 group">
-          <div :class="`h-40 bg-gradient-to-br ${colorFondo(rec.tipo)} flex items-center justify-center text-5xl`">📄</div>
-          <div class="p-5">
-            <span :class="`text-xs font-bold px-2.5 py-1 rounded-md ${badgeColor(rec.tipo)}`" style="font-family: 'Sora', sans-serif;">{{ rec.tipo }}</span>
-            <h6 class="font-bold text-slate-800 mt-2 mb-1 group-hover:text-blue-600 transition">{{ rec.titulo }}</h6>
-            <p class="text-slate-500 text-sm line-clamp-2 mb-3">{{ rec.contenido?.substring(0, 100) }}...</p>
-            <div class="flex justify-between items-center text-xs text-slate-400">
-              <span>🕐 {{ tiempoRelativo(rec.fechaPublicacion) }}</span>
-              <span class="text-blue-600 font-semibold">Leer →</span>
-            </div>
-          </div>
-        </router-link>
+        <RecursoCard v-for="rec in recursos" :key="rec.id" :recurso="rec" />
 
         <div v-if="recursos.length === 0" class="col-span-full text-center py-12 text-slate-400">
           No se encontraron recursos

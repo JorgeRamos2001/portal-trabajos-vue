@@ -29,7 +29,6 @@ function formatearFecha(fecha) {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex flex-col">
-    <NavbarPublic />
 
     <div class="max-w-6xl mx-auto px-4 py-6 flex-1">
 
