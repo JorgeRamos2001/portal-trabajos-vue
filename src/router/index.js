@@ -96,6 +96,12 @@ const router = createRouter({
       component: () => import('@/views/PostulantesEmpleoView.vue'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/aplicaciones',
+      name: 'aplicaciones-empresa',
+      component: () => import('@/views/AplicacionesEmpresaView.vue'),
+      meta: { requiresAuth: true }
+    },
 
     // Admin
     {

@@ -25,6 +25,7 @@ const linksPostulante = [
 
 const linksEmpleador = [
   { to: '/mis-empleos', icon: '📝', text: 'Mis ofertas' },
+  { to: '/aplicaciones', icon: '👥', text: 'Aplicaciones' },
   { to: '/publicar-empleo', icon: '➕', text: 'Publicar empleo' },
   { to: '/mi-perfil-empresa', icon: '🏢', text: 'Perfil empresa' }
 ]

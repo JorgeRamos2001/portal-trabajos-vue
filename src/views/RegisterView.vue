@@ -237,8 +237,19 @@ async function handleRegister() {
               </div>
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Sector</label>
-                <input v-model="form.sector" type="text" required placeholder="Tecnología"
-                       class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition" />
+                <select v-model="form.sector" required class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition bg-white">
+                  <option value="">Selecciona un sector</option>
+                  <option>Tecnología</option>
+                  <option>Marketing</option>
+                  <option>Finanzas</option>
+                  <option>Salud</option>
+                  <option>Educación</option>
+                  <option>Legal</option>
+                  <option>Ingeniería</option>
+                  <option>Comercio</option>
+                  <option>Construcción</option>
+                  <option>Otro</option>
+                </select>
               </div>
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Tipo</label>

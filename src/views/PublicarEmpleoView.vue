@@ -6,22 +6,24 @@ import api from '@/api/axios'
 const router = useRouter()
 
 const categorias = ref([])
+const mensaje = ref('')
+const error = ref('')
+const loading = ref(false)
+
 const form = ref({
   titulo: '',
-  descripcion: '',
-  requisitos: '',
-  funciones: '',
   idCategoria: '',
+  tipoContrato: 'Tiempo completo',
   modalidad: 'Remoto',
   ubicacion: '',
   salarioMinimo: '',
   salarioMaximo: '',
   vacantes: 1,
-  fechaVencimiento: ''
+  fechaVencimiento: '',
+  descripcion: '',
+  requisitos: '',
+  funciones: ''
 })
-
-const loading = ref(false)
-const error = ref('')
 
 onMounted(async () => {
   try {
@@ -32,6 +34,7 @@ onMounted(async () => {
 
 async function publicar() {
   error.value = ''
+  mensaje.value = ''
   loading.value = true
   try {
     await api.post('/empleos', form.value)
@@ -44,81 +47,130 @@ async function publicar() {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto p-8">
-    <h1 class="text-2xl font-extrabold text-slate-800 mb-6" style="font-family: 'Sora', sans-serif;">➕ Publicar Empleo</h1>
+  <div class="p-7">
 
+    <!-- Mensajes -->
     <div v-if="error" class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-4 text-sm">{{ error }}</div>
 
-    <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 space-y-4">
-
+    <!-- TOPBAR -->
+    <div class="flex items-center gap-3 mb-6">
+      <button @click="$router.push('/mis-empleos')" class="border border-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 transition text-sm">
+        <i class="bi bi-arrow-left"></i>
+      </button>
       <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Título del puesto</label>
-        <input v-model="form.titulo" type="text" required placeholder="Desarrollador Full Stack" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none" />
+        <h5 class="font-bold text-xl text-slate-800">Crear nueva oferta</h5>
+        <div class="text-slate-500 text-sm">Completa todos los campos para publicar</div>
       </div>
+    </div>
 
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Descripción</label>
-        <textarea v-model="form.descripcion" rows="5" required placeholder="Describe el puesto..." class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none"></textarea>
-      </div>
+    <!-- INFORMACIÓN BÁSICA -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-7 mb-5">
+      <h6 class="font-bold text-slate-800 pb-3 border-b border-slate-200 mb-5">Información básica</h6>
 
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Requisitos</label>
-        <textarea v-model="form.requisitos" rows="5" required placeholder="- Experiencia en...&#10;- Conocimientos en..." class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none"></textarea>
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Funciones</label>
-        <textarea v-model="form.funciones" rows="4" required placeholder="- Desarrollar...&#10;- Mantener..." class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none"></textarea>
-      </div>
+        <div class="md:col-span-2">
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Título del puesto *</label>
+          <input type="text" v-model="form.titulo" placeholder="Ej: Desarrollador Full Stack Senior"
+                 class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" />
+        </div>
 
-      <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Categoría</label>
-          <select v-model="form.idCategoria" required class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none bg-white">
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Categoría *</label>
+          <select v-model="form.idCategoria" class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 bg-white">
             <option value="">Seleccionar</option>
             <option v-for="cat in categorias" :key="cat.id" :value="cat.id">{{ cat.nombre }}</option>
           </select>
         </div>
+
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Modalidad</label>
-          <select v-model="form.modalidad" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none bg-white">
-            <option>Remoto</option>
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Tipo de contrato *</label>
+          <select v-model="form.tipoContrato" class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 bg-white">
+            <option>Tiempo completo</option>
+            <option>Medio tiempo</option>
+            <option>Freelance</option>
+            <option>Prácticas</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Modalidad de trabajo *</label>
+          <select v-model="form.modalidad" class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 bg-white">
             <option>Presencial</option>
+            <option>Remoto</option>
             <option>Híbrido</option>
           </select>
         </div>
-      </div>
 
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Ubicación</label>
-        <input v-model="form.ubicacion" type="text" required placeholder="San Salvador" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none" />
-      </div>
-
-      <div class="grid grid-cols-3 gap-4">
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Salario mínimo ($)</label>
-          <input v-model="form.salarioMinimo" type="number" min="0" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none" />
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Ubicación</label>
+          <input type="text" v-model="form.ubicacion" placeholder="Ciudad, País"
+                 class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" />
         </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Salario máximo ($)</label>
-          <input v-model="form.salarioMaximo" type="number" min="0" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none" />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Vacantes</label>
-          <input v-model="form.vacantes" type="number" min="1" class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none" />
-        </div>
-      </div>
 
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Fecha de vencimiento</label>
-        <input v-model="form.fechaVencimiento" type="date" required class="w-full border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none" />
-      </div>
+        <div>
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Salario mínimo (USD)</label>
+          <input type="number" v-model="form.salarioMinimo" placeholder="0"
+                 class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" />
+        </div>
 
-      <button @click="publicar" :disabled="loading"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-2.5 transition disabled:opacity-50" style="font-family: 'Sora', sans-serif;">
-        {{ loading ? 'Publicando...' : 'Publicar empleo' }}
-      </button>
-      <p class="text-xs text-slate-400 text-center">La publicación quedará pendiente de aprobación por un administrador.</p>
+        <div>
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Salario máximo (USD)</label>
+          <input type="number" v-model="form.salarioMaximo" placeholder="0"
+                 class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" />
+        </div>
+
+        <div>
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Vacantes *</label>
+          <input type="number" v-model="form.vacantes" min="1" placeholder="1"
+                 class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" />
+        </div>
+
+        <div>
+          <label class="block font-medium text-sm text-slate-700 mb-1.5">Fecha de cierre</label>
+          <input type="date" v-model="form.fechaVencimiento"
+                 class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" />
+        </div>
+
+      </div>
     </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-7 mb-5">
+      <h6 class="font-bold text-slate-800 pb-3 border-b border-slate-200 mb-5">Descripción del puesto</h6>
+      <label class="block font-medium text-sm text-slate-700 mb-1.5">Descripción general *</label>
+      <textarea v-model="form.descripcion" rows="6" placeholder="Describe el rol, responsabilidades y el equipo..."
+                class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 min-h-[140px]"></textarea>
+      <div class="text-slate-400 text-xs mt-1">Mínimo 200 caracteres.</div>
+    </div>
+
+    <!-- REQUISITOS -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-7 mb-5">
+      <h6 class="font-bold text-slate-800 pb-3 border-b border-slate-200 mb-5">Requisitos</h6>
+      <label class="block font-medium text-sm text-slate-700 mb-1.5">Requisitos *</label>
+      <textarea v-model="form.requisitos" rows="6" placeholder="Lista los requisitos del candidato ideal..."
+                class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 min-h-[140px]"></textarea>
+      <div class="text-slate-400 text-xs mt-1">Mínimo 200 caracteres.</div>
+    </div>
+
+    <!-- FUNCIONES -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-7 mb-5">
+      <h6 class="font-bold text-slate-800 pb-3 border-b border-slate-200 mb-5">Funciones</h6>
+      <label class="block font-medium text-sm text-slate-700 mb-1.5">Funciones *</label>
+      <textarea v-model="form.funciones" rows="6" placeholder="Describe las funciones y responsabilidades del puesto..."
+                class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 min-h-[140px]"></textarea>
+      <div class="text-slate-400 text-xs mt-1">Mínimo 200 caracteres.</div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="flex items-center justify-between">
+      <button @click="$router.push('/mis-empleos')" class="border border-slate-200 text-slate-600 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-slate-50 transition flex items-center gap-1.5">
+        <i class="bi bi-arrow-left"></i> Cancelar
+      </button>
+      <button @click="publicar" :disabled="loading" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-2 rounded-lg transition flex items-center gap-1.5 disabled:opacity-50">
+        <i class="bi bi-send"></i> {{ loading ? 'Publicando...' : 'Publicar oferta' }}
+      </button>
+    </div>
+
   </div>
 </template>
