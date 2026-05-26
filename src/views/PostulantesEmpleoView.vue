@@ -101,6 +101,14 @@ function urlCV(path) {
   const clean = path.startsWith('/') ? path.slice(1) : path
   return `http://localhost:3000/${clean}`
 }
+
+async function cerrarOferta() {
+  if (!confirm('¿Cerrar esta oferta?')) return
+  try {
+    await api.delete(`/empleos/${idEmpleo}`)
+    router.push('/mis-empleos')
+  } catch {}
+}
 </script>
 
 <template>
@@ -132,6 +140,11 @@ function urlCV(path) {
               class="text-xs font-bold rounded-full px-3 py-1 flex-shrink-0">
           ● {{ empleo?.estado }}
         </span>
+
+        <button @click="cerrarOferta"
+                class="border border-red-200 text-red-500 text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-red-50 transition">
+          🚫 Cerrar oferta
+        </button>
       </div>
 
       <!-- PIPELINE -->

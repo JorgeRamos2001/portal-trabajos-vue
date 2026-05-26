@@ -38,6 +38,14 @@ function fechaRelativa(fecha) {
   if (diff === 1) return 'Hace 1 día'
   return `Hace ${diff} días`
 }
+
+async function cerrarOferta(id) {
+  if (!confirm('¿Cerrar esta oferta? Ya no recibirá más postulaciones.')) return
+  try {
+    await api.delete(`/empleos/${id}`)
+    await cargarOfertas()
+  } catch {}
+}
 </script>
 
 <template>
@@ -84,6 +92,10 @@ function fechaRelativa(fecha) {
             </div>
           </div>
 
+          <button @click="cerrarOferta(oferta.id)"
+                  class="border border-red-200 text-red-500 text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-red-50 transition">
+            Cerrar oferta
+          </button>
           <!-- Action -->
           <div class="flex-shrink-0">
             <RouterLink
