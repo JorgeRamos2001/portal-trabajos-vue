@@ -164,10 +164,7 @@ function urlCV(path) {
 
         <!-- Ver perfil -->
         <div class="w-24 hidden lg:block">
-          <button @click="verPerfil(a)"
-                  class="border border-blue-200 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-lg hover:bg-blue-50 transition w-full">
-            Ver perfil
-          </button>
+          <RouterLink :to="`/candidato/${a.idCandidato}`"  class="border border-blue-200 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-lg hover:bg-blue-50 transition w-full">Ver perfil</RouterLink>
         </div>
 
         <!-- Fecha -->

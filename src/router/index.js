@@ -108,6 +108,11 @@ const router = createRouter({
       component: () => import('@/views/AplicacionesEmpresaView.vue'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/candidato/:id',
+      name: 'perfil-candidato',
+      component: () => import('@/views/PerfilPublicoPostulante.vue')
+    },
 
     // Admin
     {
